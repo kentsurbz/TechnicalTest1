@@ -39,57 +39,67 @@ export default class App extends Component {
     this.emailEditingHandler = this.emailEditingHandler.bind(this);
   }
 
-  onChangeEmailHandler(email) {
+  onChangeEmailHandler(email,buttonIsDisabled) {
     this.setState({ email })
+this.setState({ buttonIsDisabled })
   }
 
-  onChangePasswordHandler(password) {
+  onChangePasswordHandler(password,buttonIsDisabled) {
     this.setState({ password })
+    this.setState({ buttonIsDisabled })
   }
 
 
   emailEditingHandler() {
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const email = this.state.email;
-
+    const passwordLength = this.state.password.length;
+    if (reg.test(email) == true && passwordLength > 5 && passwordLength < 13) {
+      buttonIsDisabled = false
+    }
+    else {
+      buttonIsDisabled = true
+    }
     if (email.length == 0) {
       this.setState({
-        errorEmail: 'Email is required',
-        disabled: true,
+        errorEmail: 'email is required',
       })
     }
     else if (reg.test(email) == false) {
       this.setState({
-        errorEmail: 'Invalid Email',
-        disabled: true,
+        errorEmail: 'not correct format for email address',
       })
     }
     else {
       this.setState({
         errorEmail: '',
-        disabled: false
       })
     }
   }
 
   passwordEditingHandler() {
+    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const passwordLength = this.state.password.length;
+    const email = this.state.email;
+    if (reg.test(email) == true && passwordLength > 5 && passwordLength < 13) {
+      disabled = false
+    }
+    else {
+      disabled   = true
+    }
     if (passwordLength == 0) {
       this.setState({
-        errorPassword: 'Password is required',
-        disabled: true,
+        errorPassword: 'password is required',
       })
     }
     else if (passwordLength < 6 || passwordLength > 12) {
       this.setState({
-        errorPassword: 'Password length must be 6-12 characters',
-        disabled: true,
+        errorPassword: 'please use at least 6 - 12 characters',
       });
     }
     else {
       this.setState({
         errorPassword: '',
-        disabled: false,
       })
     }
   }
@@ -134,26 +144,27 @@ export default class App extends Component {
                 style={styles.input}
                 onChangeText={(password) => { this.onChangePasswordHandler(password) }}
                 onEndEditing={(password) => { this.passwordEditingHandler() }}
-                secureTextEntry
-                underlineColorAndroid='rgba(0,0,0,0)'
-              />
+                secureTextEntry 
+                underlineColorAndroid='rgba(0,0,0,0)' />
             </View>
             <Text style={styles.textError}>
               {this.state.errorPassword}
             </Text>
-            {/* <CheckBox title={"remember"} value={this.state.check} onChange={() => this.checkBoxRemember()} title = "Remember Me"/> */}
             <View style={{ flexDirection: 'row' }}>
-              <CheckBox
-                checkedColor='#7c57bb'
+              <CheckBox style={styles.checkboxContainer}
+                unCheckedColor='#7c57bb'
+                checkedColor='7c57bb'
                 value={this.state.checked}
                 onValueChange={() => this.setState({ checked: !this.state.checked })} />
-              <Text style={styles.checkboxText} > Remember Me</Text>
+              <Text style={styles.checkboxText} >Remember Me</Text>
             </View>
-            <Button style={styles.buttonStyle} onPress={onButtonPress}
-              // disabled={this.state.buttonIsDisabled}
+            <View style={styles.buttonContainer}>
+            <Button onPress={onButtonPress}
+              disabled={this.state.buttonIsDisabled}
               title="Login"
-              color="#7c57bb"
-              accessibilityLabel="See an informative alert"></Button>
+              color="#7c57bb" />
+              </View>
+            
           </View>
         </ScrollView>
       </View>
@@ -165,25 +176,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    padding: 8
+  },
+  buttonContainer:{
+    marginTop: 20,
   },
   buttonStyle: {
-    marginTop: 30,
-    alignItems: 'baseline'
+    borderRadius: 25,
   },
   checkboxText: {
-    marginTop: 5,
+    marginTop: 7,
     color: '#000',
   },
   checkboxContainer: {
-    borderColor: '#ffffff',
+    borderColor: '#7c57bb',
     opacity: .4,
-    margin: 0,
-    padding: 0,
-    borderRadius: 0,
+    borderWidth: 1.5,
+    borderRadius: 5,
   },
   loginContainer: {
-    marginTop: 20,
     flex: 1,
+    marginTop: 20,
   },
   textLabel: {
     marginTop: 20,
@@ -199,10 +212,10 @@ const styles = StyleSheet.create({
     resizeMode: 'contain'
   },
   inputContainer: {
+    borderRadius: 5,
     paddingHorizontal: 10,
     borderWidth: 1.5,
     borderColor: '#7c57bb',
-    borderRadius: 5,
     height: 40,
   },
   textError: {
