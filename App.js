@@ -8,8 +8,10 @@
  */
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, Image, ScrollView, TextInput, Button, Alert, CheckBox } from 'react-native';
+import { Platform, StyleSheet, Text, View, Image, ScrollView, TextInput, Alert } from 'react-native';
 import Logo from './img_src/Logo.png'
+import { CheckBox } from 'react-native-elements'
+import Button from 'react-native-button'
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -31,14 +33,13 @@ export default class App extends Component {
       errorEmail: '',
       errorPassword: '',
       buttonIsDisabled: true,
-      check: false,
+      checked: false,
     }
 
     this.onChangeEmailHandler = this.onChangeEmailHandler.bind(this);
     this.onChangePasswordHandler = this.onChangePasswordHandler.bind(this);
     this.emailEditingHandler = this.emailEditingHandler.bind(this);
   }
-
   onChangeEmailHandler(email) {
     this.setState({ email })
   }
@@ -49,11 +50,11 @@ export default class App extends Component {
 
 
   emailEditingHandler() {
-    const {buttonIsDisabled,password} =this.state;
+    var { buttonIsDisabled, password } = this.state;
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    const email = this.state.email;
-    passwordLength = this.state.password.length;
-    
+    var email = this.state.email;
+    var passwordLength = this.state.password.length;
+
     if (email.length == 0) {
       this.setState({
         errorEmail: 'email is required',
@@ -69,19 +70,19 @@ export default class App extends Component {
         errorEmail: '',
       })
     }
-    if(reg.test(email) && passwordLength > 5 && passwordLength < 13){
+    if (reg.test(email) && passwordLength > 5 && passwordLength < 13) {
       this.state.buttonIsDisabled = false
     }
-    else{
+    else {
       this.state.buttonIsDisabled = true
     }
   }
 
   passwordEditingHandler() {
-    const {buttonIsDisabled,email} =this.state;
+    var { buttonIsDisabled, email } = this.state;
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    const passwordLength = this.state.password.length;
-    emailLength = this.state.email;
+    var passwordLength = this.state.password.length;
+    var emailLength = this.state.email;
     if (passwordLength == 0) {
       this.setState({
         errorPassword: 'password is required',
@@ -97,10 +98,10 @@ export default class App extends Component {
         errorPassword: '',
       })
     }
-    if(reg.test(emailLength) && passwordLength > 5 && passwordLength < 13){
+    if (reg.test(emailLength) && passwordLength > 5 && passwordLength < 13) {
       this.state.buttonIsDisabled = false
     }
-    else{
+    else {
       this.state.buttonIsDisabled = true
     }
   }
@@ -109,15 +110,15 @@ export default class App extends Component {
   render() {
 
     return (
-      <View style={styles.container}>
-
-        <ScrollView>
+      <View style={styles.mainContainer}>
+        <ScrollView showsVerticalScrollIndicator={false} >
 
           <View style={styles.logo}>
-            <Image source={Logo} ></Image>
+            <Image source={Logo} />
           </View>
 
           <View style={styles.loginContainer}>
+
             <Text style={styles.textLabel}>Email</Text>
             <View style={styles.inputContainer}>
               <TextInput
@@ -152,32 +153,37 @@ export default class App extends Component {
               {this.state.errorPassword}
             </Text>
             <View style={{ flexDirection: 'row' }}>
+
               <CheckBox style={styles.checkboxContainer}
-                unCheckedColor='#7c57bb'
-                checkedColor='7c57bb'
-                value={this.state.checked}
-                onValueChange={() => this.setState({ checked: !this.state.checked })} />
-              <Text style={styles.checkboxText} >Remember Me</Text>
+                title='Remember me'
+                containerStyle={{ marginLeft: 10, marginRight: 20, padding: 0, borderWidth: 0, backgroundColor: 'white' }}
+                checkedColor='#7c57bb'
+                uncheckedColor='#7c57bb'
+                checked={this.state.checked}
+                onPress={() => this.setState({ checked: !this.state.checked })} />
             </View>
             <View style={styles.buttonContainer}>
-              <Button onPress={onButtonPress}
+              <Button style={{ fontSize: 20, color: 'white' }} onPress={onButtonPress}
                 disabled={this.state.buttonIsDisabled}
-                title="Login"
-                color="#7c57bb" />
+                disabledContainerStyle={{ backgroundColor: '#dddddd' }}
+                containerStyle={{ padding: 10, height: 45, overflow: 'hidden', borderRadius: 7, backgroundColor: '#7c57bb' }}
+              >Sign In</Button>
             </View>
 
           </View>
+
         </ScrollView>
+
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     flex: 1,
+    backgroundColor: 'white',
     alignItems: 'center',
-    padding: 8
   },
   buttonContainer: {
     marginTop: 20,
@@ -190,20 +196,18 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   checkboxContainer: {
-    borderColor: '#7c57bb',
     opacity: .4,
-    borderWidth: 1.5,
-    borderRadius: 5,
+    borderWidth: 0,
+    borderRadius: 0,
   },
   loginContainer: {
-    flex: 1,
+    flex: 2,
     marginTop: 20,
   },
   textLabel: {
     marginTop: 20,
     color: '#000',
     fontSize: 20,
-    paddingVertical: 3,
     fontWeight: '600'
   },
   logo: {
@@ -222,7 +226,6 @@ const styles = StyleSheet.create({
   textError: {
     color: 'red',
     fontStyle: 'italic',
-    paddingTop: 3
   },
 
 });
