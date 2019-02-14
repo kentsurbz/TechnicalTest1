@@ -39,27 +39,21 @@ export default class App extends Component {
     this.emailEditingHandler = this.emailEditingHandler.bind(this);
   }
 
-  onChangeEmailHandler(email,buttonIsDisabled) {
+  onChangeEmailHandler(email) {
     this.setState({ email })
-this.setState({ buttonIsDisabled })
   }
 
-  onChangePasswordHandler(password,buttonIsDisabled) {
+  onChangePasswordHandler(password) {
     this.setState({ password })
-    this.setState({ buttonIsDisabled })
   }
 
 
   emailEditingHandler() {
+    const {buttonIsDisabled,password} =this.state;
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const email = this.state.email;
-    const passwordLength = this.state.password.length;
-    if (reg.test(email) == true && passwordLength > 5 && passwordLength < 13) {
-      buttonIsDisabled = false
-    }
-    else {
-      buttonIsDisabled = true
-    }
+    passwordLength = this.state.password.length;
+    
     if (email.length == 0) {
       this.setState({
         errorEmail: 'email is required',
@@ -75,18 +69,19 @@ this.setState({ buttonIsDisabled })
         errorEmail: '',
       })
     }
+    if(reg.test(email) && passwordLength > 5 && passwordLength < 13){
+      this.state.buttonIsDisabled = false
+    }
+    else{
+      this.state.buttonIsDisabled = true
+    }
   }
 
   passwordEditingHandler() {
+    const {buttonIsDisabled,email} =this.state;
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const passwordLength = this.state.password.length;
-    const email = this.state.email;
-    if (reg.test(email) == true && passwordLength > 5 && passwordLength < 13) {
-      disabled = false
-    }
-    else {
-      disabled   = true
-    }
+    emailLength = this.state.email;
     if (passwordLength == 0) {
       this.setState({
         errorPassword: 'password is required',
@@ -101,6 +96,12 @@ this.setState({ buttonIsDisabled })
       this.setState({
         errorPassword: '',
       })
+    }
+    if(reg.test(emailLength) && passwordLength > 5 && passwordLength < 13){
+      this.state.buttonIsDisabled = false
+    }
+    else{
+      this.state.buttonIsDisabled = true
     }
   }
 
@@ -144,7 +145,7 @@ this.setState({ buttonIsDisabled })
                 style={styles.input}
                 onChangeText={(password) => { this.onChangePasswordHandler(password) }}
                 onEndEditing={(password) => { this.passwordEditingHandler() }}
-                secureTextEntry 
+                secureTextEntry
                 underlineColorAndroid='rgba(0,0,0,0)' />
             </View>
             <Text style={styles.textError}>
@@ -159,12 +160,12 @@ this.setState({ buttonIsDisabled })
               <Text style={styles.checkboxText} >Remember Me</Text>
             </View>
             <View style={styles.buttonContainer}>
-            <Button onPress={onButtonPress}
-              disabled={this.state.buttonIsDisabled}
-              title="Login"
-              color="#7c57bb" />
-              </View>
-            
+              <Button onPress={onButtonPress}
+                disabled={this.state.buttonIsDisabled}
+                title="Login"
+                color="#7c57bb" />
+            </View>
+
           </View>
         </ScrollView>
       </View>
@@ -178,7 +179,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 8
   },
-  buttonContainer:{
+  buttonContainer: {
     marginTop: 20,
   },
   buttonStyle: {
