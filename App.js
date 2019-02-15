@@ -8,7 +8,7 @@
  */
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, Image, ScrollView, TextInput, Alert } from 'react-native';
+import { Platform, StyleSheet, Text, View, Image, ScrollView, TextInput, Alert, Dimensions } from 'react-native';
 import Logo from './img_src/Logo.png'
 import { CheckBox } from 'react-native-elements'
 import Button from 'react-native-button'
@@ -118,43 +118,45 @@ export default class App extends Component {
           </View>
 
           <View style={styles.loginContainer}>
-
             <Text style={styles.textLabel}>Email</Text>
             <View style={styles.inputContainer}>
               <TextInput
+                style={styles.input}
                 label="Email"
                 keyboardType="email-address"
                 placeholder="Input email address"
-                placeholderStyle={styles.placeholder}
                 value={this.state.email}
-                style={styles.input}
+                placeHolderTextStyle={styles.placeHolderHint}
                 onChangeText={(email) => { this.onChangeEmailHandler(email) }}
                 onEndEditing={(email) => { this.emailEditingHandler() }}
                 underlineColorAndroid='rgba(0,0,0,0)' />
-
-              <Text style={styles.textError}>
-                {this.state.errorEmail}
-              </Text>
             </View>
+
+            <Text style={styles.textError}>
+              {this.state.errorEmail}
+            </Text>
             <Text style={styles.textLabel}>Password</Text>
+
             <View style={styles.inputContainer}>
               <TextInput
+                style={styles.input}
                 label="Password"
                 placeholder="Input password"
-                placeholderStyle={styles.placeholder}
                 value={this.state.password}
-                style={styles.input}
+                placeHolderTextStyle={styles.placeHolderHint}
                 onChangeText={(password) => { this.onChangePasswordHandler(password) }}
                 onEndEditing={(password) => { this.passwordEditingHandler() }}
                 secureTextEntry
                 underlineColorAndroid='rgba(0,0,0,0)' />
             </View>
+
             <Text style={styles.textError}>
               {this.state.errorPassword}
             </Text>
+
             <View style={{ flexDirection: 'row' }}>
 
-              <CheckBox style={styles.checkboxContainer}
+              <CheckBox
                 title='Remember me'
                 containerStyle={{ marginLeft: 10, marginRight: 20, padding: 0, borderWidth: 0, backgroundColor: 'white' }}
                 checkedColor='#7c57bb'
@@ -162,6 +164,7 @@ export default class App extends Component {
                 checked={this.state.checked}
                 onPress={() => this.setState({ checked: !this.state.checked })} />
             </View>
+
             <View style={styles.buttonContainer}>
               <Button style={{ fontSize: 20, color: 'white' }} onPress={onButtonPress}
                 disabled={this.state.buttonIsDisabled}
@@ -185,45 +188,42 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
   },
+  input: {
+    fontSize: 16,
+  },
+  placeHolderHint: {
+    fontStyle: 'italic'
+  },
   buttonContainer: {
     marginTop: 20,
   },
   buttonStyle: {
     borderRadius: 25,
   },
-  checkboxText: {
-    marginTop: 7,
-    color: '#000',
-  },
-  checkboxContainer: {
-    opacity: .4,
-    borderWidth: 0,
-    borderRadius: 0,
-  },
   loginContainer: {
-    flex: 2,
+    padding: 20,
+    width: Dimensions.get('window').width,
     marginTop: 20,
   },
   textLabel: {
-    marginTop: 20,
+    marginTop: 5,
     color: '#000',
     fontSize: 20,
     fontWeight: '600'
   },
   logo: {
-    flex: 1,
     alignItems: 'center',
     marginTop: 50,
     resizeMode: 'contain'
   },
   inputContainer: {
-    borderRadius: 5,
-    paddingHorizontal: 10,
+    borderRadius: 7,
+    paddingLeft: 8,
     borderWidth: 1.5,
     borderColor: '#7c57bb',
-    height: 40,
   },
   textError: {
+    marginLeft: 4,
     color: 'red',
     fontStyle: 'italic',
   },
