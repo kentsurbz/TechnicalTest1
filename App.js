@@ -158,6 +158,7 @@ export default class App extends Component {
 
               <CheckBox
                 title='Remember me'
+                textAlign='center'
                 containerStyle={{ marginLeft: 10, marginRight: 20, padding: 0, borderWidth: 0, backgroundColor: 'white' }}
                 checkedColor='#7c57bb'
                 uncheckedColor='#7c57bb'
@@ -196,9 +197,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 20,
-  },
-  buttonStyle: {
-    borderRadius: 25,
   },
   loginContainer: {
     padding: 20,
