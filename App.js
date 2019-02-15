@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic'
   },
   buttonContainer: {
-    marginTop: 20,
+    marginTop: 10,
   },
   loginContainer: {
     padding: 20,
